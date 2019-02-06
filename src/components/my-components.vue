@@ -1,13 +1,66 @@
 <template>
-    $END$
+    <div class="ui card">
+        <div class="content">
+            <i class="right floated like icon"></i>
+            <i class="right floated star icon" @click="setName()" :style="{color:star}"></i>
+            <div class="header"></div>
+            <div class="description">
+
+            </div>
+        </div>
+        <div class="extra content">
+        <span class="left floated like">
+          <i class="like icon"></i>
+          Like
+        </span>
+            <span class="right floated star">
+          <i class="star icon"></i>
+          Favorite
+        </span>
+        </div>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "my-components"
-    }
+        data:function () {
+            return{
+                star:'',
+                isGreen:false,
+                styles:'stars',
+
+            }
+        },
+        methods:{
+            setName:function(){
+                this.isGreen= !this.isGreen;
+                if (this.isGreen){
+                    return this.star='#f4bb4a';
+                    //console.log("lkasjdfkasjdf");
+                }
+                else
+                    return this.star='';
+                //console.log("worked");
+            },
+
+        }
+
+    };
 </script>
 
-<style scoped>
+<style>
+    right floated star icon{
+        color: yellow;
+    }
 
+    cards{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
 </style>
+
+
+
+
