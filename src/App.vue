@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import main from './components/main-div'
+  import main from './components/main-card'
   export default {
     components:{
       'main-file':main

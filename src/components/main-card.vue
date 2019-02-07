@@ -8,12 +8,13 @@
         <card-detail></card-detail>
         <card-detail></card-detail>
         <card-detail></card-detail>
+        <card-detail></card-detail>
         <h1>hell</h1>
     </div>
 </template>
 
 <script>
-    import card from './my-components'
+    import card from './Card-detail'
     export default {
         components:{
             'card-detail':card
