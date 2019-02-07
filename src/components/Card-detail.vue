@@ -3,9 +3,11 @@
         <div class="content">
             <i class="right floated like icon"></i>
             <i class="right floated star icon" @click="setName()" :style="{color:star}"></i>
-            <div class="header"></div>
+            <div class="header">
+                <h1>{{heading}}</h1>
+            </div>
             <div class="description">
-
+                <p>{{paragraph}}</p>
             </div>
         </div>
         <div class="extra content">
@@ -23,24 +25,27 @@
 
 <script>
     export default {
-        data:function () {
-            return{
-                star:'',
-                isGreen:false,
-                styles:'stars',
+
+        props:{
+            paragraph:String,
+            heading:String
+        },
+
+        data: function () {
+            return {
+                star: '',
+                isGreen: false,
+                styles: 'stars',
 
             }
         },
-        methods:{
-            setName:function(){
-                this.isGreen= !this.isGreen;
-                if (this.isGreen){
-                    return this.star='#f4bb4a';
-                    //console.log("lkasjdfkasjdf");
-                }
-                else
-                    return this.star='';
-                //console.log("worked");
+        methods: {
+            setName: function () {
+                this.isGreen = !this.isGreen;
+                if (this.isGreen) {
+                    return this.star = '#f4bb4a';
+                } else
+                    return this.star = '';
             },
 
         }
