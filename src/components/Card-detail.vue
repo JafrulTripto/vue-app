@@ -4,10 +4,10 @@
             <i class="right floated like icon"></i>
             <i class="right floated star icon" @click="setName()" :style="{color:star}"></i>
             <div class="header">
-                <h1>{{heading}}</h1>
+                <slot></slot>
             </div>
             <div class="description">
-                <p>{{paragraph}}</p>
+               <p></p>
             </div>
         </div>
         <div class="extra content">
@@ -26,10 +26,6 @@
 <script>
     export default {
 
-        props:{
-            paragraph:String,
-            heading:String
-        },
 
         data: function () {
             return {

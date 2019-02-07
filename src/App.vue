@@ -1,20 +1,19 @@
 <template>
-  <div>
-    <h1>To-Do</h1>
-    <Todo :lists="lists"></Todo>
-
+  <div class="ui raised very padded text container segment">
+    <h2 class="ui header">Writings</h2>
+    <main-file @todoAdded="newTodo"></main-file>
+    <todo :lists="lists"></todo>
   </div>
 
 </template>
 
 <script>
-  import card from './components/Card-detail';
+
   import main from './components/main-card';
   import todoGrid from './components/todo-grid';
   export default {
     components:{
       mainFile:main,
-      cardDetail:card,
       todo: todoGrid
     },
     data:function () {
@@ -23,8 +22,10 @@
       }
     },
     methods:{
-      newCard(newParagraph){
+      newTodo(newParagraph){
         this.lists.push(newParagraph);
+
+
       }
     }
 
