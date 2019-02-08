@@ -1,20 +1,20 @@
 <template>
     <div>
-        <table border="1px solid black">
-            <thead>
-            <th>Title</th>
-            <th>Status</th>
-            <th>Action</th>
-            </thead>
-            <tbody>
-            <tr v-for="(card, index) in lists" :key="index">
-                <td>{{card}}</td>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-        <!--<new-element ></new-element>-->
+        <!--<table border="1px solid black">-->
+            <!--<thead>-->
+            <!--<th>Title</th>-->
+            <!--<th>Status</th>-->
+            <!--<th>Action</th>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr v-for="(card, index) in lists" :key="index">-->
+                <!--<td>{{card}}</td>-->
+                <!--<td></td>-->
+                <!--<td></td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+        <new-element v-for="(card, index) in lists" :key="index">{{card}}</new-element>
     </div>
 </template>
 
