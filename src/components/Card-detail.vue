@@ -1,8 +1,8 @@
 <template>
     <div class="ui card">
         <div class="content">
-            <i class="right floated like icon"></i>
-            <i class="right floated star icon" @click="setName()" :style="{color:star}"></i>
+            <i class="right floated like icon" @click="deleteTodo()"></i>
+
             <div class="header">
                 <slot name="title"></slot>
             </div>
@@ -11,11 +11,8 @@
             </div>
         </div>
         <div class="extra content">
-        <span class="left floated like">
-          <i class="like icon"></i>
-          Like
-        </span>
-            <span class="right floated star">
+
+            <span class="right floated star" @click="setName()" :style="{color:star}">
           <i class="star icon"></i>
           Favorite
         </span>
@@ -26,7 +23,7 @@
 <script>
     export default {
 
-
+        props:['keyindex'],
         data: function () {
             return {
                 star: '',
@@ -43,6 +40,10 @@
                 } else
                     return this.star = '';
             },
+            deleteTodo:function () {
+                this.$emit('deleteTodolist',this.keyindex);
+                //console.log("function worked"+ this.keyIndex);
+            }
 
         }
 

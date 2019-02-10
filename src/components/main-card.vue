@@ -4,7 +4,7 @@
 
 
         <div class="ui form" style="margin-bottom: 100px;">
-            <input type="text" placeholder="Say something...." v-model="form.newParagraph"/>
+            <input type="text" placeholder="Say something...." v-model="form.title"/>
             <div class="field">
                 <label>Text</label>
                 <textarea v-model="form.description"></textarea>
@@ -13,7 +13,7 @@
 
 
         <div>
-            <button class="negative ui button" @click="addMore()">Add more</button>
+            <button class="negative ui button" @click.prevent="addMore()">Add more</button>
         </div>
     </div>
 </template>
@@ -27,7 +27,7 @@
         data: function () {
             return {
                 form: {
-                    newParagraph:'',
+                    title:'',
                     description:''
                 }
             }
@@ -36,20 +36,11 @@
         methods: {
             addMore() {
                 this.$emit('todoAdded', this.form);
-                console.log(this.form.newParagraph);
-                this.form.newParagraph = '';
+                this.form.title = '';
                 this.form.description = '';
-                console.log(" add more function");
-
-
             }
-
-        },
-        created() {
-
         }
-
-    }
+    };
 </script>
 
 <style scoped>

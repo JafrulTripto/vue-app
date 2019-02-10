@@ -8,15 +8,15 @@
             <!--</thead>-->
             <!--<tbody>-->
             <!--<tr v-for="(card, index) in lists" :key="index">-->
-                <!--<td>{{card.newParagraph}}</td>-->
+                <!--<td>{{card.title}}</td>-->
                 <!--<td></td>-->
                 <!--<td></td>-->
             <!--</tr>-->
             <!--</tbody>-->
         <!--</table>-->
-        <new-element v-for="(card, index) in lists" :key="index">
+        <new-element v-for="(card, index) in lists" :keyindex="index" @deleteTodolist="todoDeleted">
             <h2 slot="title" >{{card.title}}</h2>
-            <h2 slot="description">{{card.description}}</h2>
+            <h5 slot="description">{{card.description}}</h5>
         </new-element>
 
 
@@ -31,6 +31,13 @@
         props:['lists'],
         components:{
             newElement:card
+        },
+        methods:{
+            todoDeleted(keyindex){
+                this.lists.splice(keyindex,1);
+                console.log('function worked'+this.index);
+
+        }
         }
     }
 </script>

@@ -25,17 +25,22 @@
       newTodo(newParagraph){
 
         this.lists.push({
-          title:newParagraph.newParagraph,
+          title:newParagraph.title,
           description:newParagraph.description
         });
+        console.log("newTodo function");
 
-        console.log("new to do ");
+      },
+      todoDeleted(keyIndex){
+        this.lists.splice(keyIndex,1);
+        console.log(keyIndex);
+        console.log("function worked 1234")
       }
     }
 
   };
 
-  // :paragraph="newParagraph"
+  // :paragraph="title"
 </script>
 
 <style>
