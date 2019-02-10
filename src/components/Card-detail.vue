@@ -4,10 +4,10 @@
             <i class="right floated like icon"></i>
             <i class="right floated star icon" @click="setName()" :style="{color:star}"></i>
             <div class="header">
-                <slot></slot>
+                <slot name="title"></slot>
             </div>
             <div class="description">
-               <slot></slot>
+               <slot name="description"></slot>
             </div>
         </div>
         <div class="extra content">

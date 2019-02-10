@@ -14,8 +14,12 @@
             <!--</tr>-->
             <!--</tbody>-->
         <!--</table>-->
-        <new-element v-for="(card, index) in lists" :key="index">{{card.title}}</new-element>
-        <new-element v-for="(card, index) in lists" :key="index">{{card.description}}</new-element>
+        <new-element v-for="(card, index) in lists" :key="index">
+            <h2 slot="title" >{{card.title}}</h2>
+            <h2 slot="description">{{card.description}}</h2>
+        </new-element>
+
+
     </div>
 </template>
 
