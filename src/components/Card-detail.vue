@@ -7,7 +7,7 @@
                 <slot></slot>
             </div>
             <div class="description">
-               <p></p>
+               <slot></slot>
             </div>
         </div>
         <div class="extra content">

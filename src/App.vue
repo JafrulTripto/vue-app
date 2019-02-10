@@ -24,8 +24,7 @@
     methods:{
       newTodo(newParagraph){
         this.lists.push(newParagraph);
-
-
+        console.log("new to do ");
       }
     }
 

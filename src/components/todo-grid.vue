@@ -8,13 +8,13 @@
             <!--</thead>-->
             <!--<tbody>-->
             <!--<tr v-for="(card, index) in lists" :key="index">-->
-                <!--<td>{{card}}</td>-->
+                <!--<td>{{card.newParagraph}}</td>-->
                 <!--<td></td>-->
                 <!--<td></td>-->
             <!--</tr>-->
             <!--</tbody>-->
         <!--</table>-->
-        <new-element v-for="(card, index) in lists" :key="index">{{card}}</new-element>
+        <new-element v-for="(card, index) in lists" :key="index">{{card.newParagraph}}</new-element>
     </div>
 </template>
 
