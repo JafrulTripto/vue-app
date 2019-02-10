@@ -36,8 +36,8 @@
         methods: {
             addMore() {
                 this.$emit('todoAdded', this.form);
-
-                //this.form.newParagraph = '';
+                console.log(this.form.newParagraph);
+                this.form.newParagraph = '';
                 this.form.description = '';
                 console.log(" add more function");
 

@@ -14,7 +14,8 @@
             <!--</tr>-->
             <!--</tbody>-->
         <!--</table>-->
-        <new-element v-for="(card, index) in lists" :key="index">{{card.newParagraph}}</new-element>
+        <new-element v-for="(card, index) in lists" :key="index">{{card.title}}</new-element>
+        <new-element v-for="(card, index) in lists" :key="index">{{card.description}}</new-element>
     </div>
 </template>
 

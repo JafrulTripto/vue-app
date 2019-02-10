@@ -23,7 +23,12 @@
     },
     methods:{
       newTodo(newParagraph){
-        this.lists.push(newParagraph);
+
+        this.lists.push({
+          title:newParagraph.newParagraph,
+          description:newParagraph.description
+        });
+
         console.log("new to do ");
       }
     }
