@@ -12,7 +12,7 @@
             <div>
                 <label for="start-date">Start date</label>
                 <datetime type="datetime" v-model="form.startDate" id="start-date"></datetime>
-                <label for="end-date">Start date</label>
+                <label for="end-date">End date</label>
                 <datetime type="datetime" v-model="form.endDate" id="end-date"></datetime>
 
             </div>
@@ -48,7 +48,7 @@
                 this.form.title = '';
                 this.form.description = '';
                 this.form.startDate='';
-                this.endDate='';
+                this.form.endDate='';
             }
         }
     };

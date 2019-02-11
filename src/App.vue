@@ -34,15 +34,13 @@
           title:newParagraph.title,
           description:newParagraph.description,
           startDate: moment(newParagraph.startDate).format('MMMM Do YYYY, h:mm:ss a'),
-          endDate: moment(newParagraph.endDate).format('MMMM Do YYYY, h:mm:ss a')
+          endDate: moment(newParagraph.endDate).format('MMMM Do YYYY, h:mm:ss a'),
+          status:"On progress"
         });
 
+        console.log("list status "+this.lists[0].status)
+
         localStorage.setItem(STORAGE_KEY,JSON.stringify(this.lists));
-
-      },
-      todoDeleted(keyIndex){
-        this.lists.splice(keyIndex,1);
-
 
       }
     },

@@ -5,7 +5,12 @@ import Datetime from 'vue-datetime'
 // You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
 
-Vue.use(Datetime)
+import BootstrapVue from 'bootstrap-vue'
+
+
+Vue.use(BootstrapVue);
+
+Vue.use(Datetime);
 
 Vue.config.productionTip = false
 
