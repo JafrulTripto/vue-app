@@ -1,17 +1,23 @@
 <template>
     <div class="ui card">
         <div class="content">
-            <i class="right floated like icon" @click="deleteTodo()"></i>
+            <i class="right floated close icon" @click="deleteTodo()" ></i>
 
             <div class="header">
                 <slot name="title"></slot>
             </div>
             <div class="description">
-               <slot name="description"></slot>
+                <slot name="description"></slot>
             </div>
         </div>
         <div class="extra content">
+            <div>
 
+                <label for="start-date">Start's At:</label>
+                <slot name="start-date" id="start-date"></slot>
+                <label for="end-date">End's at:</label>
+                <slot name="end-date" id="end-date"></slot>
+            </div>
             <span class="right floated star" @click="setName()" :style="{color:star}">
           <i class="star icon"></i>
           Favorite

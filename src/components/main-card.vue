@@ -9,26 +9,35 @@
                 <label>Text</label>
                 <textarea v-model="form.description"></textarea>
             </div>
+            <div>
+                <label for="start-date">Start date</label>
+                <datetime type="datetime" v-model="form.startDate" id="start-date"></datetime>
+                <label for="end-date">Start date</label>
+                <datetime type="datetime" v-model="form.endDate" id="end-date"></datetime>
+
+            </div>
+            <div>
+                <button class="negative ui button" @click.prevent="addMore()">Add more</button>
+            </div>
         </div>
 
-
-        <div>
-            <button class="negative ui button" @click.prevent="addMore()">Add more</button>
-        </div>
     </div>
 </template>
 
 <script>
 
 
+
     export default {
         name: 'main-file',
-        components: {},
+
         data: function () {
             return {
                 form: {
                     title:'',
-                    description:''
+                    description:'',
+                    startDate:'',
+                    endDate:''
                 }
             }
         },
@@ -38,6 +47,8 @@
                 this.$emit('todoAdded', this.form);
                 this.form.title = '';
                 this.form.description = '';
+                this.form.startDate='';
+                this.endDate='';
             }
         }
     };
