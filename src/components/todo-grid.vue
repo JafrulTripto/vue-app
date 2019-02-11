@@ -57,9 +57,11 @@
                         }
                     });
             },
-            statusChanged:function(key){
+            statusChanged(key){
                 this.lists[key].status='done';
+                localStorage.setItem(STORAGE_KEY,JSON.stringify(this.lists));
                 return this.lists[key].status;
+
             }
         }
     }

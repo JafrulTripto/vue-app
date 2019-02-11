@@ -39,8 +39,8 @@
                 <td>
                     <slot name="end-date"></slot>
                 </td>
-                <td class="positive">
-                    <i class="icon checkmark"></i><slot name="status"></slot>
+                <td>
+                    <i :class="status == 'done' ? 'icon checkmark':'icon close'"></i><slot name="status"></slot>
                 </td>
                 <td>
                     <div class="ui buttons">

@@ -38,7 +38,7 @@
           status:"On progress"
         });
 
-        console.log("list status "+this.lists[0].status)
+
 
         localStorage.setItem(STORAGE_KEY,JSON.stringify(this.lists));
 
