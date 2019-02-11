@@ -4,7 +4,11 @@
 
 
         <div class="ui form" style="margin-bottom: 100px;">
-            <input type="text" placeholder="Say something...." v-model="form.title"/>
+            <div class="field">
+                <label for="title">Title</label>
+                <input type="text" id="title" placeholder="Say something...." v-model="form.title"/>
+            </div>
+
             <div class="field">
                 <label>Text</label>
                 <textarea v-model="form.description"></textarea>

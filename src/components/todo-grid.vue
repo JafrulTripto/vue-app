@@ -15,12 +15,12 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-        <new-element v-for="(card, index) in lists" :keyIndex="index" @deleteTodolist="todoDeleted" @changeStatus="statusChanged">
+        <new-element v-for="(card, index) in lists" :keyIndex="index" :status="card.status" @deleteTodolist="todoDeleted" @changeStatus="statusChanged">
             <h5 slot="title">{{card.title}}</h5>
             <h5 slot="description">{{card.description}}</h5>
             <h6 slot="start-date">{{card.startDate}}</h6>
             <h6 slot="end-date">{{card.endDate}}</h6>
-            <h3 slot="status">{{card.status}}</h3>
+            <h4 slot="status">{{card.status}}</h4>
         </new-element>
             </table>
         </div>
@@ -45,28 +45,21 @@
         methods: {
             todoDeleted(key) {
 
-                swal("Click on either the button or outside the modal.")
+                swal("Opps!!", "Are you sure?", "error")
                     .then((value) => {
                         if (value){
-                            console.log(key);
                             this.lists.splice(key, 1);
                             localStorage.setItem(STORAGE_KEY,JSON.stringify(this.lists));
+                            swal("Successfully","Deleted","success");
                         }
                         else{
                             return false;
                         }
-
-
                     });
-
-
-
-
-
             },
-            statusChanged(key){
+            statusChanged:function(key){
                 this.lists[key].status='done';
-                console.log(key);
+                return this.lists[key].status;
             }
         }
     }

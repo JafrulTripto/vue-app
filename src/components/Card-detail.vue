@@ -26,7 +26,7 @@
     <!--</div>-->
 
             <tbody>
-            <tr>
+            <tr :class="status == 'done' ? 'positive' : 'negative'">
                 <td>
                     <slot name="title"></slot>
                 </td>
@@ -58,7 +58,7 @@
 <script>
     export default {
 
-        props:['keyIndex'],
+        props:['keyIndex','status'],
         data: function () {
             return {
                 star: '',
@@ -77,11 +77,11 @@
             },
             deleteTodo:function () {
                 this.$emit('deleteTodolist',this.keyIndex);
-                console.log("function worked"+ this.keyIndex);
+
             },
             changeStatus:function(){
                 this.$emit('changeStatus',this.keyIndex);
-                console.log(this.keyIndex);
+
             }
 
         }
