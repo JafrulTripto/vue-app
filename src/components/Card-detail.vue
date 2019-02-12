@@ -36,11 +36,17 @@
                 <td>
                     <slot name="start-date"></slot>
                 </td>
+
                 <td>
                     <slot name="end-date"></slot>
                 </td>
                 <td>
-                    <i :class="status == 'done' ? 'icon checkmark':'icon close'"></i><slot name="status"></slot>
+                    <countdown :time="endTimeMillisecond">
+                        <template slot-scope="props">Time Remaining：<br>{{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds.</template>
+                    </countdown>
+                </td>
+                <td>
+                    <div :class="status == 'done' ? 'ui green horizontal label':'ui red horizontal label'"><slot name="status"></slot></div>
                 </td>
                 <td>
                     <div class="ui buttons">
@@ -56,14 +62,19 @@
 </template>
 
 <script>
+    import Vue from 'vue';
+    import VueCountdown from '@chenfengyuan/vue-countdown';
+    import moment from 'moment'
+    Vue.component(VueCountdown.name, VueCountdown);
     export default {
 
-        props:['keyIndex','status'],
+        props:['keyIndex','status', 'endTime'],
         data: function () {
             return {
                 star: '',
                 isGreen: false,
                 styles: 'stars',
+                endTimeMillisecond: 0,
 
             }
         },
@@ -82,8 +93,25 @@
             changeStatus:function(){
                 this.$emit('changeStatus',this.keyIndex);
 
+            },
+
+
+            calculateCountdown(){
+                    let now = moment(new Date());
+                    let end = moment(this.endTime);
+                    let duration = moment.duration(now.diff(end));
+                    let milliseconds = duration.asMilliseconds();
+                    this.endTimeMillisecond = Math.abs(milliseconds);
+                    console.log(this.status);
+                    return true;
+
             }
 
+
+
+        },
+        created(){
+            this.calculateCountdown();
         }
 
     };
