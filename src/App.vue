@@ -1,14 +1,11 @@
 <template>
+    <div>
+        <div class="ui clearing divider"></div>
+        <main-file @todoAdded="newTodo"></main-file>
 
-            <div class="ui horizontal segments">
-
-                <div class="ui segment">
-                    <h2 class="ui right floated header">Add To-Do</h2>
-                    <div class="ui clearing divider"></div>
-                    <main-file @todoAdded="newTodo"></main-file>
-                </div>
-                        <todo :lists="lists"></todo>
-                </div>
+        <todo :lists="lists"></todo>
+        <vue-toastr ref="toastr">hi</vue-toastr>
+    </div>
 </template>
 
 <script>
@@ -18,6 +15,9 @@
     import main from './components/main-card';
     import todoGrid from './components/todo-grid';
     import moment from 'moment'
+    import 'bootstrap/dist/css/bootstrap.css'
+
+
 
     export default {
         components: {
@@ -31,17 +31,22 @@
         },
         methods: {
             newTodo(newParagraph) {
+                if (newParagraph.title && newParagraph.description && newParagraph.startDate&& newParagraph.endDate !='') {
+                    this.lists.push({
+                        title: newParagraph.title,
+                        description: newParagraph.description,
+                        startDate: newParagraph.startDate,
+                        endDate: newParagraph.endDate,
+                        status: "On progress"
+                    });
 
-                this.lists.push({
-                    title: newParagraph.title,
-                    description: newParagraph.description,
-                    startDate: newParagraph.startDate,
-                    endDate: newParagraph.endDate,
-                    status: "On progress"
-                });
-
-                console.log(moment(newParagraph.startDate).format('MM-DD-YYYY, h:mm:ss a'));
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists));
+                    //console.log(moment(newParagraph.startDate).format('MM-DD-YYYY, h:mm:ss a'));
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists));
+                    this.$toastr.e("ERRROR MESSAGE");
+                    return true;
+                }
+                else
+                    return false;
 
             }
         },

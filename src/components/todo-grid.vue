@@ -2,6 +2,9 @@
 
     <div class="ui segment">
             <h2 class="ui right floated header">To-Do List</h2>
+        <h2 class="ui left floated header">Add To-Do</h2>
+        <!-- Trigger the modal with a button -->
+        <b-btn v-b-modal="'myMainModal'">Add To-Do</b-btn>
             <div class="ui clearing divider"></div>
             <table class="ui celled table">
                 <thead>
@@ -25,7 +28,7 @@
                 @changeStatus="statusChanged">
 
             <h3 slot="title">{{card.title}}</h3>
-            <h3 slot="description">{{card.description}}</h3>
+            <h6 slot="description">{{card.description}}</h6>
             <h5 slot="start-date">{{moment(card.startDate)}}</h5>
             <h5 slot="end-date">{{moment(card.endDate)}}</h5>
             <h4 slot="status">{{card.status}}</h4>
@@ -39,7 +42,6 @@
     import card from './Card-detail';
     import swal from 'sweetalert';
     import moment from 'moment'
-    import countdown from 'moment-countdown'
 
     const STORAGE_KEY = 'todo-app';
 
@@ -68,16 +70,8 @@
             statusChanged(key){
                 this.lists[key].status='done';
                 localStorage.setItem(STORAGE_KEY,JSON.stringify(this.lists));
-                //console.log(moment(this.lists[key].startDate,'h:mm').format('h:mm').toString());
-                //console.log(setInterval(moment(this.lists[key].startDate,'MM-DD-YYYY , h:mm:ss a').countdown(moment(this.lists[key].endDate,'MM-DD-YYYY, h:mm:ss a')).toString()));
-                //console.log(moment(this.lists[key].startDate,'MM-DD-YYYY , h:mm:ss a').countdown(moment(this.lists[key].endDate,'MM-DD-YYYY, h:mm:ss a')).toString());
             },
-            remainingTime(key){
-                //console.log(setInterval(moment(this.lists[key].startDate,'MM-DD-YYYY , h:mm:ss a').countdown(moment(this.lists[key].endDate,'d MMM YYYY, h:mm:ss a')).toString()));
-                const x= moment(this.lists[key].startDate,'MM-DD-YYYY , h:mm:ss a').countdown(moment(this.lists[key].endDate,'MM-DD-YYYY, h:mm:ss a').toString());
 
-              console.log(x);
-            },
             moment(dateTime){
                 return moment(dateTime).format('MM-DD-YYYY, h:mm:ss a')
             }

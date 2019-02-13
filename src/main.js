@@ -6,11 +6,11 @@ import Datetime from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
 
 import BootstrapVue from 'bootstrap-vue'
-
-
-
-
 Vue.use(BootstrapVue);
+
+import Toastr from 'vue-toastr';
+require('vue-toastr/src/vue-toastr.scss');
+Vue.component('vue-toastr',Toastr);
 
 Vue.use(Datetime);
 
@@ -19,6 +19,7 @@ Vue.config.productionTip = false
 window.$ = window.jQuery = require('jquery')
 require('semantic-ui-css/semantic.css')
 require('semantic-ui-css/semantic.js')
+
 
 
 

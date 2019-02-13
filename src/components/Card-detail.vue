@@ -1,62 +1,47 @@
 <template>
-    <!--<div class="ui card">-->
-        <!--<div class="content">-->
-            <!--<i class="right floated close icon" @click="deleteTodo()" ></i>-->
+    <tbody>
+    <tr :class="status == 'done' ? 'positive' : 'negative'">
+        <td>
+            <slot name="title"></slot>
+        </td>
+        <td>
+            <slot name="description"></slot>
+        </td>
+        <td>
+            <slot name="start-date"></slot>
+        </td>
 
-            <!--<div class="header">-->
-                <!--<slot name="title"></slot>-->
-            <!--</div>-->
-            <!--<div class="description">-->
-                <!--<slot name="description"></slot>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="extra content">-->
-            <!--<div>-->
+        <td>
+            <slot name="end-date"></slot>
+        </td>
+        <td v-if="status=='done'">
+            <h5>Task Finished</h5>
+        </td>
+        <td v-else-if="calculateCountdown()">
+            <h5>Deadline over</h5>
+        </td>
+        <td v-else>
+            <countdown :time="endTimeMillisecond">
+                <template slot-scope="props">Time Remaining：<br>{{ props.days}} days, {{ props.hours }} hours, {{
+                    props.minutes }} minutes, {{ props.seconds }} seconds.
+                </template>
+            </countdown>
+        </td>
 
-                <!--<label for="start-date">Start's At:</label>-->
-                <!--<slot name="start-date" id="start-date"></slot>-->
-                <!--<label for="end-date">End's at:</label>-->
-                <!--<slot name="end-date" id="end-date"></slot>-->
-            <!--</div>-->
-            <!--<span class="right floated star" @click="setName()" :style="{color:star}">-->
-          <!--<i class="star icon"></i>-->
-          <!--Favorite-->
-        <!--</span>-->
-        <!--</div>-->
-    <!--</div>-->
-
-            <tbody>
-            <tr :class="status == 'done' ? 'positive' : 'negative'">
-                <td>
-                    <slot name="title"></slot>
-                </td>
-                <td>
-                    <slot name="description"></slot>
-                </td>
-                <td>
-                    <slot name="start-date"></slot>
-                </td>
-
-                <td>
-                    <slot name="end-date"></slot>
-                </td>
-                <td>
-                    <countdown :time="endTimeMillisecond">
-                        <template slot-scope="props">Time Remaining：<br>{{ props.days }} days, {{ props.hours }} hours, {{ props.minutes }} minutes, {{ props.seconds }} seconds.</template>
-                    </countdown>
-                </td>
-                <td>
-                    <div :class="status == 'done' ? 'ui green horizontal label':'ui red horizontal label'"><slot name="status"></slot></div>
-                </td>
-                <td>
-                    <div class="ui buttons">
-                        <button class="ui negative button" @click.prevent="deleteTodo()">Delete</button>
-                        <div class="or"></div>
-                        <button class="ui positive button" @click.stop="changeStatus()">Done</button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
+        <td>
+            <div :class="status == 'done' ? 'ui green horizontal label':'ui red horizontal label'">
+                <slot name="status"></slot>
+            </div>
+        </td>
+        <td>
+            <div class="ui buttons">
+                <button class="ui negative button" @click.prevent="deleteTodo()">Delete</button>
+                <div class="or"></div>
+                <button class="ui positive button" @click.stop="changeStatus()">Done</button>
+            </div>
+        </td>
+    </tr>
+    </tbody>
 
 
 </template>
@@ -65,10 +50,11 @@
     import Vue from 'vue';
     import VueCountdown from '@chenfengyuan/vue-countdown';
     import moment from 'moment'
+
     Vue.component(VueCountdown.name, VueCountdown);
     export default {
 
-        props:['keyIndex','status', 'endTime'],
+        props: ['keyIndex', 'status', 'endTime'],
         data: function () {
             return {
                 star: '',
@@ -86,31 +72,39 @@
                 } else
                     return this.star = '';
             },
-            deleteTodo:function () {
-                this.$emit('deleteTodolist',this.keyIndex);
+            deleteTodo: function () {
+                this.$emit('deleteTodolist', this.keyIndex);
 
             },
-            changeStatus:function(){
-                this.$emit('changeStatus',this.keyIndex);
+            changeStatus: function () {
+                this.$emit('changeStatus', this.keyIndex);
 
             },
 
 
-            calculateCountdown(){
-                    let now = moment(new Date());
-                    let end = moment(this.endTime);
-                    let duration = moment.duration(now.diff(end));
-                    let milliseconds = duration.asMilliseconds();
-                    this.endTimeMillisecond = Math.abs(milliseconds);
-                    console.log(this.status);
+            calculateCountdown() {
+                let now = moment(new Date());
+                let end = moment(this.endTime);
+                let duration = moment.duration(now.diff(end));
+                let milliseconds = duration.asMilliseconds();
+
+                //console.log(duration.asMilliseconds());
+
+                if (duration.asMilliseconds()>0) {
                     return true;
+                }
+                else {
+
+                    this.endTimeMillisecond = Math.abs(milliseconds);
+                    return false;
+                }
+
 
             }
 
 
-
         },
-        created(){
+        created() {
             this.calculateCountdown();
         }
 
