@@ -10,17 +10,15 @@
   "dependencies": {
     "@chenfengyuan/vue-countdown": "^1.1.0",
     "bootstrap-vue": "^2.0.0-rc.11",
-    "countdown": "^2.6.0",
     "jquery": "^3.3.1",
     "luxon": "^1.11.2",
     "moment": "^2.24.0",
-    "moment-countdown": "0.0.3",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-vue": "^0.7.0",
+
     "sweetalert": "^2.1.2",
+    "toastr": "^2.1.4",
     "vue": "^2.6.6",
     "vue-datetime": "^1.0.0-beta.10",
-    "vue-toastr": "^2.0.16",
+    "vue-toastr-2": "0.0.10",
     "weekstart": "^1.0.0"
   },
   "devDependencies": {

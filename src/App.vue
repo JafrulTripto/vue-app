@@ -1,10 +1,9 @@
 <template>
     <div>
-        <div class="ui clearing divider"></div>
+        <div class="col-sm-6"></div>
         <main-file @todoAdded="newTodo"></main-file>
-
         <todo :lists="lists"></todo>
-        <vue-toastr ref="toastr">hi</vue-toastr>
+
     </div>
 </template>
 
@@ -14,15 +13,15 @@
     const STORAGE_KEY = 'todo-app';
     import main from './components/main-card';
     import todoGrid from './components/todo-grid';
-    import moment from 'moment'
-    import 'bootstrap/dist/css/bootstrap.css'
+
+    import 'bootstrap/dist/css/bootstrap.css';
 
 
 
     export default {
         components: {
             mainFile: main,
-            todo: todoGrid
+            todo: todoGrid,
         },
         data: function () {
             return {
@@ -42,7 +41,8 @@
 
                     //console.log(moment(newParagraph.startDate).format('MM-DD-YYYY, h:mm:ss a'));
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists));
-                    this.$toastr.e("ERRROR MESSAGE");
+                    this.$toastr.success('New To-Do added', 'Message',{positionClass: "toast-bottom-right"});
+
                     return true;
                 }
                 else
@@ -53,11 +53,11 @@
 
         created() {
             this.lists = JSON.parse(localStorage.getItem(STORAGE_KEY) || []);
+            this.$toastr.error('Message', 'Title',{positionClass: "toast-bottom-right"});
         }
 
     };
 
-    // :paragraph="title"
 </script>
 
 <style>

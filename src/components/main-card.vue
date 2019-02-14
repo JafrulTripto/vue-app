@@ -5,44 +5,36 @@
                 :header-bg-variant="'info'"
                 :header-text-variant="'light'"
                 :body-bg-variant="'light'"
-                :body-text-variant="'warning'">
+                :body-text-variant="'dark'">
 
-            <div class="ui form" style="margin-bottom: 100px;">
-                <div class="field">
+            <div>
+                <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" id="title" placeholder="Add a title..." v-model="title"/>
-                    <div v-if="!title" class="ui pointing red basic label">
-                        Please enter a value
-                    </div>
+                    <input class="form-control" type="text" id="title" placeholder="Add a title..." v-model="title"/>
+
                 </div>
 
-                <div class="field">
+                <div class="form-group">
                     <label>Text</label>
-                    <textarea v-model="description"></textarea>
-                    <div v-if="!description" class="ui pointing red basic label">
-                        Please enter a value
-                    </div>
-                </div>
-                <div class="field">
-                    <label for="start-date">Start date</label>
-                    <datetime type="datetime" v-model="startDate" id="start-date"></datetime>
-                    <div v-if="!startDate" class="ui pointing red basic label">
-                        Please enter a value
-                    </div>
+                    <textarea class="form-control" v-model="description"></textarea>
 
                 </div>
-                <div class="field">
+                <div class="form-group-sm">
+                    <label for="start-date">Start date</label>
+                    <datetime type="datetime" input-class="form-control" v-model="startDate" id="start-date"></datetime>
+
+                </div>
+                <div class="form-group">
                     <label for="end-date">End date</label>
                     <datetime
                             type="datetime"
+                            input-class="form-control"
                             v-model="endDate"
                             id="end-date"
                             :min-datetime="minDatetime"
                             :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
                     ></datetime>
-                    <div v-if="!endDate" class="ui pointing red basic label">
-                        Please enter a value
-                    </div>
+
                 </div>
             </div>
         </bModal>
@@ -53,12 +45,14 @@
 <script>
 
     import moment from 'moment'
-    import 'bootstrap/dist/css/bootstrap.css'
+    import 'bootstrap/dist/css/bootstrap.css';
+
 
 
 
     export default {
         name: 'main-file',
+
 
         data: function () {
             return {
@@ -80,40 +74,17 @@
         },
         watch: {
             startDate: function (val) {
-                if (val==''){
+                if (val == '') {
 
-               return false;
+                    return false;
                 }
                 let newDateObj = moment(val).add(5, 'm').toDate();
-                console.log(val);
-               // console.log(newDateObj);
+                 console.log(newDateObj);
                 let another = moment(newDateObj).toISOString();
-                //console.log(another);
+                console.log(another);
                 this.minDatetime = another;
                 return true;
-            },
-            endDate(val){
-                if (val==''){
-                    return true
-                }
-                else
-                    return false;
-            },
-            title(val){
-                if (val==''){
-                    return true
-                }
-                else
-                    return false;
-            },
-            description(val){
-                if (val==''){
-                    return true
-                }
-                else
-                    return false;
             }
-
         },
 
         methods: {
@@ -133,6 +104,10 @@
                 this.endDate = '';
                 return this.show=false;
             },
+
+            edit(){
+                this.startDate=this.f
+            }
 
 
         }

@@ -1,6 +1,6 @@
 <template>
     <tbody>
-    <tr :class="status == 'done' ? 'positive' : 'negative'">
+    <tr :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
         <td>
             <slot name="title"></slot>
         </td>
@@ -14,7 +14,7 @@
         <td>
             <slot name="end-date"></slot>
         </td>
-        <td v-if="status=='done'">
+        <td v-if="status=='Completed'">
             <h5>Task Finished</h5>
         </td>
         <td v-else-if="calculateCountdown()">
@@ -29,15 +29,20 @@
         </td>
 
         <td>
-            <div :class="status == 'done' ? 'ui green horizontal label':'ui red horizontal label'">
+            <div :class="status === 'Completed' ? 'badge badge-success':'badge badge-danger'">
                 <slot name="status"></slot>
             </div>
         </td>
         <td>
-            <div class="ui buttons">
-                <button class="ui negative button" @click.prevent="deleteTodo()">Delete</button>
-                <div class="or"></div>
-                <button class="ui positive button" @click.stop="changeStatus()">Done</button>
+            <div class="btn-group" role="group" aria-label="Basic example" v-if="status=== 'Completed'">
+                <button class="btn btn-danger" @click.prevent="deleteTodo()">Delete</button>
+                <button class="btn btn-success" @click.stop="changeStatus()">Done</button>
+            </div>
+
+            <div class="btn-group" role="group" v-else >
+                <button class="btn btn-danger" @click.prevent="deleteTodo()">Delete</button>
+                <button class="btn btn-success" @click.stop="changeStatus()">Done</button>
+                <button v-b-modal="'myMainModal'" class="btn btn-info">Edit</button>
             </div>
         </td>
     </tr>
@@ -49,7 +54,8 @@
 <script>
     import Vue from 'vue';
     import VueCountdown from '@chenfengyuan/vue-countdown';
-    import moment from 'moment'
+    import moment from 'moment';
+
 
     Vue.component(VueCountdown.name, VueCountdown);
     export default {
@@ -106,12 +112,15 @@
         },
         created() {
             this.calculateCountdown();
+
+
         }
 
     };
 </script>
 
 <style>
+
 
 </style>
 
