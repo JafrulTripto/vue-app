@@ -39,10 +39,10 @@
                 <button class="btn btn-success" @click.stop="changeStatus()">Done</button>
             </div>
 
-            <div class="btn-group" role="group" v-else >
+            <div class="btn-group" role="group" v-else>
                 <button class="btn btn-danger" @click.prevent="deleteTodo()">Delete</button>
                 <button class="btn btn-success" @click.stop="changeStatus()">Done</button>
-                <button v-b-modal="'myMainModal'" class="btn btn-info">Edit</button>
+                <slot name="edit"></slot>
             </div>
         </td>
     </tr>
@@ -56,8 +56,8 @@
     import VueCountdown from '@chenfengyuan/vue-countdown';
     import moment from 'moment';
 
-
     Vue.component(VueCountdown.name, VueCountdown);
+
     export default {
 
         props: ['keyIndex', 'status', 'endTime'],
@@ -67,7 +67,6 @@
                 isGreen: false,
                 styles: 'stars',
                 endTimeMillisecond: 0,
-
             }
         },
         methods: {
@@ -80,47 +79,33 @@
             },
             deleteTodo: function () {
                 this.$emit('deleteTodolist', this.keyIndex);
-
             },
             changeStatus: function () {
                 this.$emit('changeStatus', this.keyIndex);
-
             },
-
-
+            editTodo:function(){
+                this.$emit('editTodo',this.keyIndex);
+            },
             calculateCountdown() {
                 let now = moment(new Date());
                 let end = moment(this.endTime);
                 let duration = moment.duration(now.diff(end));
                 let milliseconds = duration.asMilliseconds();
-
-                //console.log(duration.asMilliseconds());
-
-                if (duration.asMilliseconds()>0) {
+                if (duration.asMilliseconds() > 0) {
                     return true;
-                }
-                else {
-
+                } else {
                     this.endTimeMillisecond = Math.abs(milliseconds);
                     return false;
                 }
-
-
             }
-
-
         },
         created() {
             this.calculateCountdown();
-
-
         }
-
     };
 </script>
 
 <style>
-
 
 </style>
 

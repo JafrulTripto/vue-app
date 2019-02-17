@@ -1,45 +1,44 @@
 <template>
-        <bModal id="myMainModal" @ok="addMore"
-                v-model="show"
-                title="Add To-Do"
-                :header-bg-variant="'info'"
-                :header-text-variant="'light'"
-                :body-bg-variant="'light'"
-                :body-text-variant="'dark'">
+    <bModal v-if="!edits" id="myMainModal" @ok="addMore"
+            v-model="show"
+            title="Add To-Do"
+            :header-bg-variant="'info'"
+            :header-text-variant="'light'"
+            :body-bg-variant="'light'"
+            :body-text-variant="'dark'"
+    >
 
-            <div>
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input class="form-control" type="text" id="title" placeholder="Add a title..." v-model="title"/>
-
-                </div>
-
-                <div class="form-group">
-                    <label>Text</label>
-                    <textarea class="form-control" v-model="description"></textarea>
-
-                </div>
-                <div class="form-group-sm">
-                    <label for="start-date">Start date</label>
-                    <datetime type="datetime" input-class="form-control" v-model="startDate" id="start-date"></datetime>
-
-                </div>
-                <div class="form-group">
-                    <label for="end-date">End date</label>
-                    <datetime
-                            type="datetime"
-                            input-class="form-control"
-                            v-model="endDate"
-                            id="end-date"
-                            :min-datetime="minDatetime"
-                            :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
-                    ></datetime>
-
-                </div>
+        <div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input v-if="!edits" class="form-control" type="text" id="title" placeholder="Add a title..." v-model="title"/>
+                <slot name="editTitle" v-else></slot>
             </div>
-        </bModal>
-
-
+            <div class="form-group">
+                <label>Text</label>
+                <textarea v-if="!edits" class="form-control" v-model="description"></textarea>
+                <slot v-else name="editDescription"></slot>
+            </div>
+            <div class="form-group-sm">
+                <label for="start-date">Start date</label>
+                <datetime v-if="!edits" type="datetime" input-class="form-control" v-model="startDate" id="start-date"></datetime>
+                <slot name="editStartDate" v-else></slot>
+            </div>
+            <div class="form-group">
+                <label for="end-date">End date</label>
+                <datetime
+                        v-if="!edits"
+                        type="datetime"
+                        input-class="form-control"
+                        v-model="endDate"
+                        id="end-date"
+                        :min-datetime="minDatetime"
+                        :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                ></datetime>
+                <slot v-else name="editEndDate"></slot>
+            </div>
+        </div>
+    </bModal>
 </template>
 
 <script>
@@ -47,22 +46,24 @@
     import moment from 'moment'
     import 'bootstrap/dist/css/bootstrap.css';
 
-
-
-
     export default {
         name: 'main-file',
+        props:{
+            edits:{
+                type:Boolean
+            }
+        },
 
 
         data: function () {
             return {
                 startDate: '',
                 endDate: '',
-                title:'',
-                description:'',
+                title: '',
+                description: '',
                 minDatetime: '',
-                show:false,
-                hideFooter:true,
+                show: false,
+                hideFooter: true,
                 form: {
                     title: '',
                     description: '',
@@ -79,7 +80,7 @@
                     return false;
                 }
                 let newDateObj = moment(val).add(5, 'm').toDate();
-                 console.log(newDateObj);
+                console.log(newDateObj);
                 let another = moment(newDateObj).toISOString();
                 console.log(another);
                 this.minDatetime = another;
@@ -102,14 +103,19 @@
                 this.form.endDate = '';
                 this.startDate = '';
                 this.endDate = '';
-                return this.show=false;
+                this.title='';
+                this.description='';
+                return this.show = false;
             },
+            // edit(this.keyIndex){
+            //
+            // }
 
-            edit(){
-                this.startDate=this.f
-            }
 
 
+        },
+        created() {
+            console.log(this.edits);
         }
     };
 </script>
