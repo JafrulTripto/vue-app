@@ -6,7 +6,19 @@
             <!-- Trigger the modal with a button -->
             <b-btn v-b-modal="'myModal'" class="btn-success">Add To-Do</b-btn>
         </div>
-        <div class="col-lg-12">
+
+        <div style="margin-bottom: 30px">
+            <form class="form-inline">
+                <i class="fas fa-search" aria-hidden="true"></i>
+                <input class="form-control form-control-sm ml-3 w-45"
+                       type="text" placeholder="Search"
+                       aria-label="Search" v-model="search">
+            </form>
+        </div>
+
+
+
+
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -19,6 +31,7 @@
                     <th>Action</th>
                 </tr>
                 </thead>
+                <tbody v-if="!searching">
                 <new-element
                         v-for="(card, index) in $store.state.lists"
                         :keyIndex="index"
@@ -34,6 +47,29 @@
                     <h6 slot="status">{{card.status}}</h6>
                     <button slot="edit" class="btn btn-info" v-b-modal="'myModal'" @click="clicked(index)">Edit</button>
                 </new-element>
+                </tbody>
+                <tbody v-else>
+                <new-element
+                        v-for="(card, index) in tasks"
+                        :keyIndex="index"
+                        :status="card.status"
+                        :endTime="card.endDate"
+                        @deleteTodolist="todoDeleted"
+                        @changeStatus="statusChanged">
+
+                    <h5 slot="title">{{card.title}}</h5>
+                    <p slot="description">{{card.description}}</p>
+                    <h6 slot="start-date">{{moment(card.startDate)}}</h6>
+                    <h6 slot="end-date">{{moment(card.endDate)}}</h6>
+                    <h6 slot="status">{{card.status}}</h6>
+                    <button slot="edit" class="btn btn-info" v-b-modal="'myModal'" @click="clicked(index)">Edit</button>
+                </new-element>
+                </tbody>
+
+
+
+
+
             </table>
             <main-element @todoAdded="newTodo"  :edits="edit">
                 <input slot="editTitle" class="form-control" type="text" v-model="form.title"/>
@@ -49,7 +85,7 @@
                 ></datetime>
                 <datetime slot="editStartDate" type="datetime" input-class="form-control" v-model="form.startDate" id="start-date"></datetime>
             </main-element>
-        </div>
+
     </div>
 </template>
 
@@ -58,7 +94,7 @@
     import card from './Card-detail';
     import main from './main-card';
     import swal from 'sweetalert';
-    import moment from 'moment'
+    import moment from 'moment';
 
     const STORAGE_KEY = 'todo-app';
 
@@ -66,15 +102,17 @@
         name: "todo-grid",
         components: {
             mainElement: main,
-            newElement: card
+            newElement: card,
         },
         data:
             function () {
                 return {
+                    search:'',
                     show: true,
                     edit:false,
                     minDatetime:'',
                     index:'',
+                    searching:false,
                     form: {
                         title: '',
                         description: '',
@@ -145,6 +183,13 @@
             this.$store.state.lists = JSON.parse(localStorage.getItem(STORAGE_KEY) || []);
 
         },
+        computed:{
+            tasks(){
+                return this.$store.state.lists.filter(task => {
+                    return task.title.toLowerCase().includes(this.search.toLowerCase())
+                });
+            }
+        },
         watch:{
             startDate: function (val) {
                 if (val == '') {
@@ -157,7 +202,18 @@
                 console.log(another);
                 this.minDatetime = another;
                 return true;
-            }
+            },
+            search:function (val) {
+                if (val==''){
+
+                    return false;
+                }
+                else{
+                    console.log(val);
+                    return this.searching=true;
+                }
+
+            },
         }
     }
 </script>
