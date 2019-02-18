@@ -4,7 +4,7 @@
             <h2 class="page-header float-right display-3">To-Do List</h2>
             <h2 class="page-header">Add To-Do</h2>
             <!-- Trigger the modal with a button -->
-            <b-btn v-b-modal="'myMainModal'" class="btn-success">Add To-Do</b-btn>
+            <b-btn v-b-modal="'myModal'" class="btn-success">Add To-Do</b-btn>
         </div>
         <div class="col-lg-12">
             <table class="table table-hover">
@@ -20,7 +20,7 @@
                 </tr>
                 </thead>
                 <new-element
-                        v-for="(card, index) in lists"
+                        v-for="(card, index) in $store.state.lists"
                         :keyIndex="index"
                         :status="card.status"
                         :endTime="card.endDate"
@@ -32,7 +32,7 @@
                     <h6 slot="start-date">{{moment(card.startDate)}}</h6>
                     <h6 slot="end-date">{{moment(card.endDate)}}</h6>
                     <h6 slot="status">{{card.status}}</h6>
-                    <button slot="edit" class="btn btn-info" v-b-modal="'myMainModal'" @click="clicked(index)">Edit</button>
+                    <button slot="edit" class="btn btn-info" v-b-modal="'myModal'" @click="clicked(index)">Edit</button>
                 </new-element>
             </table>
             <main-element @todoAdded="newTodo"  :edits="edit">
@@ -71,7 +71,6 @@
         data:
             function () {
                 return {
-                    lists: [],
                     show: true,
                     edit:false,
                     minDatetime:'',
@@ -89,7 +88,7 @@
         methods: {
             newTodo(newParagraph) {
                 if (newParagraph.title && newParagraph.description && newParagraph.startDate && newParagraph.endDate != '') {
-                    this.lists.push({
+                    this.$store.state.lists.push({
                         title: newParagraph.title,
                         description: newParagraph.description,
                         startDate: newParagraph.startDate,
@@ -98,20 +97,22 @@
                     });
 
                     //console.log(moment(newParagraph.startDate).format('MM-DD-YYYY, h:mm:ss a'));
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists));
+                    this.$store.getters.setLocalStorage;
                     this.$toastr.success('New To-Do added', 'Message', {positionClass: "toast-bottom-right"});
                     return true;
                 } else
                     return false;
         },
             clicked(id){
+                this.show=true;
                 this.edit=true;
-                this.form.title = this.lists[id].title;
-                this.form.description=this.lists[id].description;
-                this.form.startDate=this.lists[id].startDate;
-                this.form.endDate=this.lists[id].endDate;
-                this.form.status=this.lists[id].status;
-                this.lists.splice(id,1,this.form);
+                this.form.title =this.$store.state.lists[id].title;
+                this.form.description=this.$store.state.lists[id].description;
+                this.form.startDate=this.$store.state.lists[id].startDate;
+                this.form.endDate=this.$store.state.lists[id].endDate;
+                this.form.status=this.$store.state.lists[id].status;
+                this.$store.state.lists.splice(id,1,this.form);
+                console.log('hi')
             },
 
         todoDeleted(key) {
@@ -119,8 +120,8 @@
             swal("Opps!!", "Are you sure?", "error")
                 .then((value) => {
                     if (value) {
-                        this.lists.splice(key, 1);
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists));
+                        this.$store.state.lists.splice(key, 1);
+                        this.$store.getters.setLocalStorage;
                         this.$toastr.error('Deleted!!!', 'Message', {positionClass: "toast-bottom-right"});
                     } else {
                         return false;
@@ -129,9 +130,9 @@
         },
 
         statusChanged(key) {
-            this.lists[key].status = 'Completed';
+            this.$store.state.lists[key].status = 'Completed';
             this.$toastr.info('The task is completed!!!', 'Message', {positionClass: "toast-bottom-right"});
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(this.lists));
+            this.$store.getters.setLocalStorage;
         },
         moment(dateTime) {
             return moment(dateTime).format('DD-MM-YYYY, h:mm:ss a')
@@ -141,8 +142,8 @@
         },
 
         created() {
-            this.lists = JSON.parse(localStorage.getItem(STORAGE_KEY) || []);
-            console.log(this.edit);
+            this.$store.state.lists = JSON.parse(localStorage.getItem(STORAGE_KEY) || []);
+
         },
         watch:{
             startDate: function (val) {

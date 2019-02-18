@@ -1,44 +1,51 @@
 <template>
-    <bModal v-if="!edits" id="myMainModal" @ok="addMore"
-            v-model="show"
-            title="Add To-Do"
-            :header-bg-variant="'info'"
-            :header-text-variant="'light'"
-            :body-bg-variant="'light'"
-            :body-text-variant="'dark'"
-    >
+    <div>
+        <bModal id="myModal"
+                v-model="show"
+                title="Add To-Do"
+                :hide-footer="true"
+                :header-bg-variant="'info'"
+                :header-text-variant="'light'"
+                :body-bg-variant="'light'"
+                :body-text-variant="'dark'"
+        >
 
-        <div>
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input v-if="!edits" class="form-control" type="text" id="title" placeholder="Add a title..." v-model="title"/>
-                <slot name="editTitle" v-else></slot>
+            <div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input v-if="!edits" class="form-control" type="text" id="title" placeholder="Add a title..." v-model="title"/>
+                    <slot name="editTitle" v-else></slot>
+                </div>
+                <div class="form-group">
+                    <label>Text</label>
+                    <textarea v-if="!edits" class="form-control" v-model="description"></textarea>
+                    <slot v-else name="editDescription"></slot>
+                </div>
+                <div class="form-group-sm">
+                    <label for="start-date">Start date</label>
+                    <datetime v-if="!edits" type="datetime" input-class="form-control" v-model="startDate" id="start-date"></datetime>
+                    <slot name="editStartDate" v-else></slot>
+                </div>
+                <div class="form-group">
+                    <label for="end-date">End date</label>
+                    <datetime
+                            v-if="!edits"
+                            type="datetime"
+                            input-class="form-control"
+                            v-model="endDate"
+                            id="end-date"
+                            :min-datetime="minDatetime"
+                            :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                    ></datetime>
+                    <slot v-else name="editEndDate"></slot>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Text</label>
-                <textarea v-if="!edits" class="form-control" v-model="description"></textarea>
-                <slot v-else name="editDescription"></slot>
-            </div>
-            <div class="form-group-sm">
-                <label for="start-date">Start date</label>
-                <datetime v-if="!edits" type="datetime" input-class="form-control" v-model="startDate" id="start-date"></datetime>
-                <slot name="editStartDate" v-else></slot>
-            </div>
-            <div class="form-group">
-                <label for="end-date">End date</label>
-                <datetime
-                        v-if="!edits"
-                        type="datetime"
-                        input-class="form-control"
-                        v-model="endDate"
-                        id="end-date"
-                        :min-datetime="minDatetime"
-                        :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
-                ></datetime>
-                <slot v-else name="editEndDate"></slot>
-            </div>
-        </div>
-    </bModal>
+            <button v-if="!edits" type="button" class="btn btn-primary" @click="addMore">Save changes</button>
+            <button v-else type="button" class="btn btn-primary" @click="edit">Save changes</button>
+            <button type="button" class="btn btn-secondary" @click="show=false" >Close</button>
+        </bModal>
+    </div>
+
 </template>
 
 <script>
@@ -90,6 +97,7 @@
 
         methods: {
             addMore() {
+
                 this.form.startDate = this.startDate;
                 this.form.endDate = this.endDate;
                 this.form.title = this.title;
@@ -107,9 +115,11 @@
                 this.description='';
                 return this.show = false;
             },
-            // edit(this.keyIndex){
-            //
-            // }
+            edit(){
+
+                this.$store.getters.setLocalStorage;
+                this.show=false;
+             }
 
 
 

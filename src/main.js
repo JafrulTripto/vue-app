@@ -24,10 +24,13 @@ window.toastr = require('toastr')
 
 Vue.use(VueToastr2)
 
+import {store} from "./store/store";
+
 Vue.config.productionTip = false
 
 
 
 new Vue({
+    store,
     render: h => h(App),
 }).$mount('#app')
