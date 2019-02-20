@@ -1,7 +1,5 @@
 <template>
     <div>
-        <div class="col-sm-6"></div>
-
         <todo></todo>
     </div>
 </template>
@@ -19,7 +17,7 @@
             todo: todoGrid,
         },
         created() {
-            this.$toastr.error('Message', 'Title', {positionClass: "toast-bottom-right"});
+
         }
     };
 

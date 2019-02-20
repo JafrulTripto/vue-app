@@ -1,4 +1,5 @@
 <template>
+
     <tr :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
         <td>
             <slot name="title"></slot>
