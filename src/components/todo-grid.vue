@@ -87,8 +87,10 @@
     import main from './main-card';
     import swal from 'sweetalert';
     import moment from 'moment';
+    import Axios from'axios';
 
-    const STORAGE_KEY = 'todo-app';
+
+
 
     export default {
         name: "todo-grid",
@@ -172,7 +174,7 @@
         },
 
         created() {
-            this.$store.state.lists = JSON.parse(localStorage.getItem(STORAGE_KEY) || []);
+            this.$store.getters.databaseRead;
         },
         computed: {
             tasks() {
