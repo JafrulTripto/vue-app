@@ -11,12 +11,12 @@ export let store = new Vuex.Store({
     },
     getters:{
         databaseRead: state => {
-            Axios.get('http://127.0.0.1:8000/api/todo').then(function(response){
+            Axios.get('http://app.test/api/todo').then(function(response){
                 state.lists = response.data.data;
             });
-            setTimeout(() => {
-                console.log(state.lists);
-            }, 1000)
+            // setTimeout(() => {
+            //     console.log(state.lists);
+            // }, 1000)
         },
 
     }

@@ -41,7 +41,7 @@
                 </div>
             </div>
             <button v-if="!edits" type="button" class="btn btn-primary" @click="addMore">Save changes</button>
-            <button v-else type="button" class="btn btn-primary" @click="edit">Save changes</button>
+            <button v-else type="button" class="btn btn-primary" @click="edit(id)">Save changes</button>
             <button type="button" class="btn btn-secondary" @click="show=false" >Close</button>
         </bModal>
     </div>
@@ -50,7 +50,8 @@
 
 <script>
 
-    import moment from 'moment'
+    import moment from 'moment';
+    import Axios from'axios';
     import 'bootstrap/dist/css/bootstrap.css';
 
     export default {
@@ -58,6 +59,8 @@
         props:{
             edits:{
                 type:Boolean
+            },
+            id:{
             }
         },
 
@@ -87,9 +90,7 @@
                     return false;
                 }
                 let newDateObj = moment(val).add(5, 'm').toDate();
-                console.log(newDateObj);
                 let another = moment(newDateObj).toISOString();
-                console.log(another);
                 this.minDatetime = another;
                 return true;
             }
@@ -97,7 +98,6 @@
 
         methods: {
             addMore() {
-
                 this.form.startDate = this.startDate;
                 this.form.endDate = this.endDate;
                 this.form.title = this.title;
@@ -114,10 +114,18 @@
                 this.title='';
                 this.description='';
                 return this.show = false;
-            },
-            edit(){
 
-                this.$store.getters.setLocalStorage;
+            },
+                edit(id){
+                    console.log(this.$store.state.lists[id].start_time);
+                this.form.startDate = this.$store.state.lists[id].start_time;
+                this.form.endDate = this.$store.state.lists[id].end_time;
+                this.form.title = this.$store.state.lists[id].title;
+                this.form.description = this.$store.state.lists[id].description;
+
+                Axios.put('http://app.test/api/todo/'+id,this.$store.state.lists[id]).then(function(response){
+                    this.$store.state.lists = response.data.data;
+                });
                 this.show=false;
              }
 
@@ -125,7 +133,6 @@
 
         },
         created() {
-            console.log(this.edits);
         }
     };
 </script>

@@ -48,21 +48,21 @@
                     v-for="(card, index) in tasks"
                     :keyIndex="index"
                     :status="card.status"
-                    :endTime="card.endDate"
+                    :endTime="card.end_time"
                     @deleteTodolist="todoDeleted"
                     @changeStatus="statusChanged">
 
                 <h5 slot="title">{{card.title}}</h5>
                 <p slot="description">{{card.description}}</p>
-                <h6 slot="start-date">{{moment(card.startDate)}}</h6>
-                <h6 slot="end-date">{{moment(card.endDate)}}</h6>
+                <h6 slot="start-date">{{moment(card.start_time)}}</h6>
+                <h6 slot="end-date">{{moment(card.end_time)}}</h6>
                 <h6 slot="status">{{card.status}}</h6>
                 <button slot="edit" class="btn btn-info" v-b-modal="'myModal'" @click="clicked(index)">Edit</button>
             </new-element>
             </tbody>
         </table>
 
-        <main-element @todoAdded="newTodo" :edits="edit">
+        <main-element @todoAdded="newTodo" :edits="edit" :id="form.id" >
             <input slot="editTitle" class="form-control" type="text" v-model="form.title"/>
             <textarea slot="editDescription" class="form-control" v-model="form.description"></textarea>
             <datetime
@@ -107,9 +107,10 @@
                     show: true,
                     edit: false,
                     minDatetime: '',
-                    index: '',
+                    index:'',
                     searching: false,
                     form: {
+                        id: '',
                         title: '',
                         description: '',
                         startDate: '',
@@ -121,41 +122,64 @@
             },
         methods: {
             newTodo(newParagraph) {
+                let _this = this;
                 if (newParagraph.title && newParagraph.description && newParagraph.startDate && newParagraph.endDate != '') {
-                    this.$store.state.lists.push({
+                    _this.$store.state.lists.push({
                         title: newParagraph.title,
                         description: newParagraph.description,
-                        startDate: newParagraph.startDate,
-                        endDate: newParagraph.endDate,
+                        start_time: newParagraph.startDate,
+                        end_time: newParagraph.endDate,
                         status: "On progress"
                     });
-
-                    //console.log(moment(newParagraph.startDate).format('MM-DD-YYYY, h:mm:ss a'));
-                    this.$store.getters.setLocalStorage;
-                    this.$toastr.success('New To-Do added', 'Message', {positionClass: "toast-bottom-right"});
+                    console.log(newParagraph.start_time);
+                    let  startDate= moment(newParagraph.startDate).format('YYYY-MM-DD HH:mm:ss');
+                    console.log(startDate);
+                    let endDate= moment(newParagraph.endDate).format('YYYY-MM-DD HH:mm:ss');
+                    let form={
+                        title:newParagraph.title,
+                        description:newParagraph.description,
+                        startDate:startDate,
+                        endDate:endDate,
+                        status:'On progress'
+                    };
+                    Axios.post('http://app.test/api/todo',form).then(function(response){
+                       _this.$store.state.lists = response.data.data;
+                    });
+                    _this.$toastr.success('New To-Do added', 'Message', {positionClass: "toast-bottom-right"});
                     return true;
-                } else
+                } else{
+
                     return false;
+                }
+
+
             },
             clicked(id) {
                 this.show = true;
                 this.edit = true;
+                let startDate= moment(this.$store.state.lists[id].start_time).format();
+                let endDate= moment(this.$store.state.lists[id].end_time).format();
+                this.form.id = this.$store.state.lists[id].id;
                 this.form.title = this.$store.state.lists[id].title;
                 this.form.description = this.$store.state.lists[id].description;
-                this.form.startDate = this.$store.state.lists[id].startDate;
-                this.form.endDate = this.$store.state.lists[id].endDate;
+                this.form.startDate =startDate;
+                this.form.endDate = endDate;
                 this.form.status = this.$store.state.lists[id].status;
-                this.$store.state.lists.splice(id, 1, this.form);
+                //this.$store.state.lists.splice(id, 1, this.form);
             },
 
             todoDeleted(key) {
-
+                let _this = this;
                 swal("Opps!!", "Are you sure?", "error")
                     .then((value) => {
                         if (value) {
-                            this.$store.state.lists.splice(key, 1);
-                            this.$store.getters.setLocalStorage;
-                            this.$toastr.error('Deleted!!!', 'Message', {positionClass: "toast-bottom-right"});
+                            let id = _this.$store.state.lists[key].id;
+                            Axios.delete('http://app.test/api/todo/'+id).then(function(response){
+                                _this.$store.state.lists.splice(key, 1);
+                                _this.$store.state.lists = response.data.data;
+                            });
+
+                            _this.$toastr.error('Deleted!!!', 'Message', {positionClass: "toast-bottom-right"});
                         } else {
                             return false;
                         }
@@ -175,17 +199,20 @@
 
         created() {
             this.$store.getters.databaseRead;
+
+
         },
         computed: {
             tasks() {
-                return this.$store.state.lists.filter(task => {
-                    if (this.search) {
-                        return task.title.toLowerCase().includes(this.search.toLowerCase())
+                let _this = this;
+                return _this.$store.state.lists.filter(task => {
+                    if (_this.search) {
+                        return task.title.toLowerCase().includes(_this.search.toLowerCase())
                     }else
                         return true;
                 }).filter(task => {
-                    if (this.search_status){
-                        return task.status === this.search_status;
+                    if (_this.search_status){
+                        return task.status === _this.search_status;
                     } else{
                         return true;
                     }
