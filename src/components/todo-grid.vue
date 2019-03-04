@@ -4,7 +4,7 @@
             <h2 class="page-header float-right display-3 text-white">To-Do List</h2>
             <h2 class="page-header">Add To-Do</h2>
             <!-- Trigger the modal with a button -->
-            <b-btn v-b-modal="'myModal'" class="btn-success">Add To-Do</b-btn>
+            <b-btn v-b-modal="'myModal'" class="btn-success" @click="edit=false">Add To-Do</b-btn>
         </div>
 
         <div style="margin-bottom: 30px">
@@ -62,19 +62,19 @@
             </tbody>
         </table>
 
-        <main-element @todoAdded="newTodo" :edits="edit" :id="form.id" >
+        <main-element @todoAdded="newTodo" :edits="edit" :formData="form" :id="form.id" >
             <input slot="editTitle" class="form-control" type="text" v-model="form.title"/>
             <textarea slot="editDescription" class="form-control" v-model="form.description"></textarea>
             <datetime
                     slot="editEndDate"
                     type="datetime"
                     input-class="form-control"
-                    v-model="form.endDate"
+                    v-model="form.end_time"
                     id="end-date"
                     :min-datetime="minDatetime"
                     :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
             ></datetime>
-            <datetime slot="editStartDate" type="datetime" input-class="form-control" v-model="form.startDate"
+            <datetime slot="editStartDate" type="datetime" input-class="form-control" v-model="form.start_time"
                       id="start-date"></datetime>
         </main-element>
 
@@ -110,18 +110,19 @@
                     index:'',
                     searching: false,
                     form: {
-                        id: '',
+                        id:'',
                         title: '',
                         description: '',
-                        startDate: '',
-                        endDate: '',
-                        status: ''
+                        start_time: '',
+                        end_time: '',
                     },
+
 
                 }
             },
         methods: {
             newTodo(newParagraph) {
+                console.log(this.edit);
                 let _this = this;
                 if (newParagraph.title && newParagraph.description && newParagraph.startDate && newParagraph.endDate != '') {
                     _this.$store.state.lists.push({
@@ -131,9 +132,7 @@
                         end_time: newParagraph.endDate,
                         status: "On progress"
                     });
-                    console.log(newParagraph.start_time);
                     let  startDate= moment(newParagraph.startDate).format('YYYY-MM-DD HH:mm:ss');
-                    console.log(startDate);
                     let endDate= moment(newParagraph.endDate).format('YYYY-MM-DD HH:mm:ss');
                     let form={
                         title:newParagraph.title,
@@ -162,10 +161,8 @@
                 this.form.id = this.$store.state.lists[id].id;
                 this.form.title = this.$store.state.lists[id].title;
                 this.form.description = this.$store.state.lists[id].description;
-                this.form.startDate =startDate;
-                this.form.endDate = endDate;
-                this.form.status = this.$store.state.lists[id].status;
-                //this.$store.state.lists.splice(id, 1, this.form);
+                this.form.start_time =startDate;
+                this.form.end_time = endDate;
             },
 
             todoDeleted(key) {
@@ -187,9 +184,15 @@
             },
 
             statusChanged(key) {
-                this.$store.state.lists[key].status = 'Completed';
-                this.$toastr.info('The task is completed!!!', 'Message', {positionClass: "toast-bottom-right"});
-                this.$store.getters.setLocalStorage;
+                let _this = this;
+                _this.$store.state.lists[key].status = 'Completed';
+                let form={
+                    status:_this.$store.state.lists[key].status
+                }
+                _this.$toastr.info('The task is completed!!!', 'Message', {positionClass: "toast-bottom-right"});
+                Axios.post('http://app.test/api/update_status/'+ this.$store.state.lists[key].id,form).then(function(response){
+                    console.log(response.data.data);
+                });
             },
             moment(dateTime) {
                 return moment(dateTime).format('DD-MM-YYYY, h:mm:ss a')

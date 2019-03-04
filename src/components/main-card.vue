@@ -41,7 +41,7 @@
                 </div>
             </div>
             <button v-if="!edits" type="button" class="btn btn-primary" @click="addMore">Save changes</button>
-            <button v-else type="button" class="btn btn-primary" @click="edit(id)">Save changes</button>
+            <button v-else type="button" class="btn btn-primary" @click="update(id)">Save changes</button>
             <button type="button" class="btn btn-secondary" @click="show=false" >Close</button>
         </bModal>
     </div>
@@ -57,12 +57,12 @@
     export default {
         name: 'main-file',
         props:{
+            formData:{},
             edits:{
                 type:Boolean
             },
-            id:{
-            }
-        },
+            id:{}
+    },
 
 
         data: function () {
@@ -98,6 +98,7 @@
 
         methods: {
             addMore() {
+
                 this.form.startDate = this.startDate;
                 this.form.endDate = this.endDate;
                 this.form.title = this.title;
@@ -116,20 +117,27 @@
                 return this.show = false;
 
             },
-                edit(id){
-                    console.log(this.$store.state.lists[id].start_time);
-                this.form.startDate = this.$store.state.lists[id].start_time;
-                this.form.endDate = this.$store.state.lists[id].end_time;
-                this.form.title = this.$store.state.lists[id].title;
-                this.form.description = this.$store.state.lists[id].description;
-
-                Axios.put('http://app.test/api/todo/'+id,this.$store.state.lists[id]).then(function(response){
-                    this.$store.state.lists = response.data.data;
+                update(id){
+                    let _this=this;
+                    let  startDate= moment(_this.formData.start_time).format('YYYY-MM-DD HH:mm:ss');
+                    let endDate= moment(_this.formData.end_time).format('YYYY-MM-DD HH:mm:ss');
+                    let form={
+                        title:_this.formData.title,
+                        description:_this.formData.description,
+                        start_time:startDate,
+                        end_time:endDate
+                    }
+                Axios.put('http://app.test/api/todo/'+id,form).then(function(response){
+                    _this.$store.state.lists = response.data.data;
                 });
-                this.show=false;
+                _this.show=false;
+
              }
 
 
+
+        },
+        computed:{
 
         },
         created() {
