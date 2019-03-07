@@ -20,7 +20,9 @@
                     </div>
                     <div class="col-4 float-right">
                         <div class="form-group">
-                            <select class="form-control form-control-lg" id="sel1" v-model="search_status">
+                            <select class="form-control form-control-lg"
+                                    id="sel1"
+                                    v-model="search_status">
                                 <option value="">Select Status</option>
                                 <option value="On progress">On Progress</option>
                                 <option value="Completed">Completed</option>
@@ -30,6 +32,9 @@
                 </div>
             </form>
         </div>
+        <button @click="showLogin">{{$store.state.isRegistration}}</button>
+        <login v-if="!$store.state.isRegistration"></login>
+        <registration v-else></registration>
 
         <table class="table table-hover">
             <thead>
@@ -57,7 +62,11 @@
                 <h6 slot="start-date">{{moment(card.start_time)}}</h6>
                 <h6 slot="end-date">{{moment(card.end_time)}}</h6>
                 <h6 slot="status">{{card.status}}</h6>
-                <button slot="edit" class="btn btn-info" v-b-modal="'myModal'" @click="clicked(index)">Edit</button>
+                <button slot="edit"
+                        class="btn btn-info"
+                        v-b-modal="'myModal'"
+                        @click="clicked(index)">Edit
+                </button>
             </new-element>
             </tbody>
         </table>
@@ -65,17 +74,21 @@
         <main-element @todoAdded="newTodo" :edits="edit" :formData="form" :id="form.id" >
             <input slot="editTitle" class="form-control" type="text" v-model="form.title"/>
             <textarea slot="editDescription" class="form-control" v-model="form.description"></textarea>
-            <datetime
-                    slot="editEndDate"
-                    type="datetime"
-                    input-class="form-control"
-                    v-model="form.end_time"
-                    id="end-date"
-                    :min-datetime="minDatetime"
-                    :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
+            <datetime slot="editEndDate"
+                      type="datetime"
+                      input-class="form-control"
+                      v-model="form.end_time"
+                      id="end-date"
+                      :min-datetime="minDatetime"
+                      :format="{ month: 'short',day: 'numeric',year: 'numeric', hour: 'numeric', minute: '2-digit'}"
             ></datetime>
-            <datetime slot="editStartDate" type="datetime" input-class="form-control" v-model="form.start_time"
-                      id="start-date"></datetime>
+            <datetime slot="editStartDate"
+                      type="datetime"
+                      input-class="form-control"
+                      v-model="form.start_time"
+                      id="start-date">
+
+            </datetime>
         </main-element>
 
     </div>
@@ -88,6 +101,8 @@
     import swal from 'sweetalert';
     import moment from 'moment';
     import Axios from'axios';
+    import login from './login';
+    import Registration from './Registration';
 
 
 
@@ -97,6 +112,8 @@
         components: {
             mainElement: main,
             newElement: card,
+            login:login,
+            registration:Registration
         },
         data:
             function () {
@@ -104,6 +121,7 @@
                     option: false,
                     search: '',
                     search_status:'',
+                    login:false,
                     show: true,
                     edit: false,
                     minDatetime: '',
@@ -121,6 +139,13 @@
                 }
             },
         methods: {
+            showLogin(){
+                console.log(this.$store.state.isRegistration);
+            },
+            isReg(){
+               return this.$store.state.isRegistration;
+               console.log(this.$store.state.isRegistration)
+            },
             newTodo(newParagraph) {
                 console.log(this.edit);
                 let _this = this;
@@ -185,13 +210,13 @@
 
             statusChanged(key) {
                 let _this = this;
-                _this.$store.state.lists[key].status = 'Completed';
+                _this.$store.state.lists[key].status == 'Completed'?_this.$store.state.lists[key].status='On progress':_this.$store.state.lists[key].status='Completed';
                 let form={
                     status:_this.$store.state.lists[key].status
                 }
                 _this.$toastr.info('The task is completed!!!', 'Message', {positionClass: "toast-bottom-right"});
                 Axios.post('http://app.test/api/update_status/'+ this.$store.state.lists[key].id,form).then(function(response){
-                    console.log(response.data.data);
+
                 });
             },
             moment(dateTime) {
@@ -202,6 +227,7 @@
 
         created() {
             this.$store.getters.databaseRead;
+            console.log(this.login);
 
 
         },

@@ -137,10 +137,9 @@
 
 
         },
-        computed:{
 
-        },
         created() {
+
         }
     };
 </script>

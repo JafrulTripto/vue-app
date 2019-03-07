@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export let store = new Vuex.Store({
     state:{
         lists: [],
-
+        isRegistration:false
     },
     getters:{
         databaseRead: state => {
