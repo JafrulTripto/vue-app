@@ -9,19 +9,27 @@
                         <form id="login-form" class="form" action="" method="post">
                             <h3 class="text-center text-info">Login</h3>
                             <div class="form-group">
-                                <label for="username" class="text-info">Username:</label><br>
-                                <input type="text" name="username" id="username" class="form-control">
+                                <label for="email" class="text-info">Email:</label><br>
+                                <input type="text"
+                                       name="email"
+                                       id="email"
+                                       v-model="credentials.email"
+                                       class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br>
-                                <input type="text" name="password" id="password" class="form-control">
+                                <input type="text"
+                                       name="password"
+                                       id="password"
+                                       v-model="credentials.password"
+                                       class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="remember-me" class="text-info"><span>Remember me</span><span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="submit" >
+                                <button class="btn btn-primary" @click.prevent="login">Log in</button>
                             </div>
                             <div id="register-link" class="text-right">
-                                <a href="#" class="text-info" @click.prevent="register()">Register here</a>
+                                <button class="btn btn-primary" @click="register">Register</button>
                             </div>
 
                         </form>
@@ -40,15 +48,25 @@
         data:function () {
             return {
                 show:true,
-                registration:false
+                registration:false,
+                credentials:{
+                    email:'',
+                    password:''
+                }
             }
         },
         methods:{
             register(){
-               this.$store.state.isRegistration=true;
-               console.log(this.$store.state.isRegistration);
+               this.$router.push({path:'/register'});
+            },
+            login(){
+                this.$store.dispatch('retrieveToken', this.credentials)
+                    .then(response=>{
+                         this.$router.push({path:'/todoTable'});
+                })
             }
-        }
+        },
+
 
     }
 </script>
@@ -61,7 +79,7 @@
         height: 100vh;
     }
     #login .container #login-row #login-column #login-box {
-        margin-top: 120px;
+        margin-top: 5px;
         max-width: 600px;
         height: 320px;
         border: 1px solid #9C9C9C;

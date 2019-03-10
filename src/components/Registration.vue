@@ -40,7 +40,6 @@
                                        v-model="regForm.password">
                             </div>
                             <div class="form-group">
-                                <label for="remember-me" class="text-info text-right"><span>Remember me</span><span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
                                 <button class="btn btn-primary" @click.prevent="registerUser">Submit</button>
                             </div>
                         </form>
@@ -71,7 +70,9 @@
             registerUser(){
                 Axios.post('http://app.test/api/createUser',this.regForm).then(function(response){
                     console.log(response);
+
                 });
+                this.$router.push({path:'/login'});
             }
         },
     }
@@ -85,7 +86,7 @@
         height: 100vh;
     }
     #login .container #login-row #login-column #login-box {
-        margin-top: 120px;
+        margin-top: 5px;
         max-width: 600px;
         height: 320px;
         border: 1px solid #9C9C9C;

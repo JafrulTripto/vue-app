@@ -32,9 +32,6 @@
                 </div>
             </form>
         </div>
-        <button @click="showLogin">{{$store.state.isRegistration}}</button>
-        <login v-if="!$store.state.isRegistration"></login>
-        <registration v-else></registration>
 
         <table class="table table-hover">
             <thead>
@@ -101,8 +98,7 @@
     import swal from 'sweetalert';
     import moment from 'moment';
     import Axios from'axios';
-    import login from './login';
-    import Registration from './Registration';
+
 
 
 
@@ -112,8 +108,7 @@
         components: {
             mainElement: main,
             newElement: card,
-            login:login,
-            registration:Registration
+
         },
         data:
             function () {
