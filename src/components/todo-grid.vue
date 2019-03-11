@@ -155,6 +155,7 @@
                     let  startDate= moment(newParagraph.startDate).format('YYYY-MM-DD HH:mm:ss');
                     let endDate= moment(newParagraph.endDate).format('YYYY-MM-DD HH:mm:ss');
                     let form={
+                        token:this.$store.getters.getToken,
                         title:newParagraph.title,
                         description:newParagraph.description,
                         startDate:startDate,
@@ -191,7 +192,8 @@
                     .then((value) => {
                         if (value) {
                             let id = _this.$store.state.lists[key].id;
-                            Axios.delete('http://app.test/api/todo/'+id).then(function(response){
+                            Axios.delete('http://app.test/api/todo/'+id+'?token='+this.$store.getters.getToken)
+                                .then(function(response){
                                 _this.$store.state.lists.splice(key, 1);
                                 _this.$store.state.lists = response.data.data;
                             });
@@ -207,6 +209,7 @@
                 let _this = this;
                 _this.$store.state.lists[key].status == 'Completed'?_this.$store.state.lists[key].status='On progress':_this.$store.state.lists[key].status='Completed';
                 let form={
+                    token:this.$store.getters.getToken,
                     status:_this.$store.state.lists[key].status
                 }
                 _this.$toastr.info('The task is completed!!!', 'Message', {positionClass: "toast-bottom-right"});

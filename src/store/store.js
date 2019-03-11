@@ -11,7 +11,8 @@ export const store = new Vuex.Store({
     },
     getters:{
         databaseRead: state => {
-            Axios.get('http://app.test/api/todo').then(function(response){
+
+            Axios.get('http://app.test/api/todo?token='+state.token).then(function(response){
                 state.lists = response.data.data;
             });
         },
