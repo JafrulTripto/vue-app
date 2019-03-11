@@ -25,7 +25,7 @@
         </td>
         <td v-else :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
             <countdown :time="endTimeMillisecond">
-                <template slot-scope="props">Time Remaining：<br>{{ props.days}} days, {{ props.hours }} hours, {{
+                <template slot-scope="props">Time Remaining<br>{{ props.days}} days, {{ props.hours }} hours, {{
                     props.minutes }} minutes, {{ props.seconds }} seconds.
                 </template>
             </countdown>
@@ -85,6 +85,7 @@
                 let now = moment(new Date());
                 let end = moment(this.endTime);
                 let duration = moment.duration(now.diff(end));
+
                 let milliseconds = duration.asMilliseconds();
                 if (duration.asMilliseconds() > 0) {
                     return true;
@@ -95,6 +96,7 @@
             }
         },
         created() {
+
             this.calculateCountdown();
         }
     };

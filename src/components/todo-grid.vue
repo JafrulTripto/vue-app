@@ -139,10 +139,10 @@
             newTodo(newParagraph) {
                 console.log(this.edit);
                 let _this = this;
-                let userName= this.$store.state.userData.userName;
+                let userName= this.$store.state.userData.user_id;
                 if (newParagraph.title && newParagraph.description && newParagraph.startDate && newParagraph.endDate != '') {
                     _this.$store.state.lists.push({
-                        user_name:userName,
+                        user_id:userName,
                         title: newParagraph.title,
                         description: newParagraph.description,
                         start_time: newParagraph.startDate,
@@ -152,7 +152,7 @@
                     let  startDate= moment(newParagraph.startDate).format('YYYY-MM-DD HH:mm:ss');
                     let endDate= moment(newParagraph.endDate).format('YYYY-MM-DD HH:mm:ss');
                     let form={
-                        user_name:userName,
+                        user_id:userName,
                         token:this.$store.getters.getToken,
                         title:newParagraph.title,
                         description:newParagraph.description,
@@ -161,7 +161,7 @@
                         status:'On progress'
                     };
                     Axios.post('http://app.test/api/todo',form).then(function(response){
-                       _this.$store.state.lists = response.data.data;
+
                     });
                     _this.$toastr.success('New To-Do added', 'Message', {positionClass: "toast-bottom-right"});
                     return true;
@@ -230,6 +230,7 @@
         computed: {
             tasks() {
                 let _this = this;
+                console.log(_this.$store.state.lists);
                 return _this.$store.state.lists.filter(task => {
                     if (_this.search) {
                         return task.title.toLowerCase().includes(_this.search.toLowerCase())

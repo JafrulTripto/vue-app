@@ -44,6 +44,7 @@ export const store = new Vuex.Store({
 
                         let user_Data = {
                             token:response.data.access_token,
+                            user_id:response.data.user.id,
                             userName:response.data.user.name
                         };
                         localStorage.setItem('user_data',JSON.stringify(user_Data));
