@@ -11,7 +11,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" to="todoTable">To-Do Table</router-link>
+                    <router-link v-if="loggedIn" class="nav-link" to="todoTable">To-Do Table</router-link>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,11 +24,11 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
+                <li class="nav-item" v-if="userData">
+                    <a class="nav-link disabled" href="#">{{userData.userName}}</a>
                 </li>
                 <li class="nav-item my-2 my-sm-0">
-                    <router-link v-if="!loggedIn" class="nav-link" to="/login">Log in</router-link>
+                    <router-link v-if="!loggedIn" class="nav-link" to="/">Log in</router-link>
                     <router-link v-else class="nav-link" to="/logout">Log out</router-link>
                 </li>
             </ul>
@@ -41,7 +41,7 @@
         name: "Header",
         data(){
             return{
-
+                userData: this.$store.state.userData
             }
         },
         computed:{

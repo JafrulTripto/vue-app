@@ -38,6 +38,7 @@
             <tr>
                 <th>Title</th>
                 <th>Description</th>
+                <th>User</th>
                 <th>Start time</th>
                 <th>End Time</th>
                 <th>Remaining Time</th>
@@ -56,6 +57,7 @@
 
                 <h5 slot="title">{{card.title}}</h5>
                 <p slot="description">{{card.description}}</p>
+                <h5 slot="user_name">{{card.user_name}}</h5>
                 <h6 slot="start-date">{{moment(card.start_time)}}</h6>
                 <h6 slot="end-date">{{moment(card.end_time)}}</h6>
                 <h6 slot="status">{{card.status}}</h6>
@@ -134,18 +136,13 @@
                 }
             },
         methods: {
-            showLogin(){
-                console.log(this.$store.state.isRegistration);
-            },
-            isReg(){
-               return this.$store.state.isRegistration;
-               console.log(this.$store.state.isRegistration)
-            },
             newTodo(newParagraph) {
                 console.log(this.edit);
                 let _this = this;
+                let userName= this.$store.state.userData.userName;
                 if (newParagraph.title && newParagraph.description && newParagraph.startDate && newParagraph.endDate != '') {
                     _this.$store.state.lists.push({
+                        user_name:userName,
                         title: newParagraph.title,
                         description: newParagraph.description,
                         start_time: newParagraph.startDate,
@@ -155,6 +152,7 @@
                     let  startDate= moment(newParagraph.startDate).format('YYYY-MM-DD HH:mm:ss');
                     let endDate= moment(newParagraph.endDate).format('YYYY-MM-DD HH:mm:ss');
                     let form={
+                        user_name:userName,
                         token:this.$store.getters.getToken,
                         title:newParagraph.title,
                         description:newParagraph.description,

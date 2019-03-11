@@ -6,7 +6,8 @@ import logout from './components/Log-out';
 
 export const routes = [
     {
-        path: '/login',
+        path: '/',
+        name:'login',
         component: login,
         meta:{
             requiresVisitor:true

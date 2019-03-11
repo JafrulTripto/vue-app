@@ -18,15 +18,18 @@
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br>
-                                <input type="text"
+                                <input type="password"
                                        name="password"
                                        id="password"
                                        v-model="credentials.password"
                                        class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="remember-me" class="text-info"><span>Remember me</span><span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                                <label for="remember-me" class="text-info"><span>Remember me</span>
+                                    <span><input id="remember-me" name="remember-me" type="checkbox"></span>
+                                </label><br>
                                 <button class="btn btn-primary" @click.prevent="login">Log in</button>
+
                             </div>
                             <div id="register-link" class="text-right">
                                 <button class="btn btn-primary" @click="register">Register</button>
@@ -60,7 +63,7 @@
                this.$router.push({path:'/register'});
             },
             login(){
-                this.$store.dispatch('retrieveToken', this.credentials)
+                this.$store.dispatch('retrieveUserData', this.credentials)
                     .then(response=>{
                          this.$router.push({path:'/todoTable'});
                 })

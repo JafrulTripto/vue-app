@@ -7,40 +7,47 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state:{
         lists: [],
-        token:localStorage.getItem('access_token')||null
+        userData: JSON.parse(localStorage.getItem('user_data'))
     },
     getters:{
         databaseRead: state => {
 
-            Axios.get('http://app.test/api/todo?token='+state.token).then(function(response){
+            Axios.get('http://app.test/api/todo?token='+state.userData.token).then(function(response){
                 state.lists = response.data.data;
             });
         },
         loggedIN(state){
-            return state.token!== null;
+            if (!state.userData || !state.userData.token)
+                return null;
+
+            return true;
         },
         getToken(state){
-            return state.token;
+            return state.userData.token;
         }
 
     },
     mutations:{
-        retrieveToken(state,token){
-            state.token = token;
+        retrieveUserData(state,user_Data){
+            state.userData = user_Data;
+
         },
         destroyToken(state){
-            state.token = null;
+            state.userData.token = null;
         }
     },
     actions:{
-        retrieveToken(context,credentials){
+        retrieveUserData(context,credentials){
             return new Promise((resolve, reject) =>{
                 Axios.post('http://app.test/api/login',credentials)
                     .then(function(response){
-                        console.log(response);
-                        const token = response.data.access_token;
-                        localStorage.setItem('access_token',token);
-                        context.commit('retrieveToken',token);
+
+                        let user_Data = {
+                            token:response.data.access_token,
+                            userName:response.data.user.name
+                        };
+                        localStorage.setItem('user_data',JSON.stringify(user_Data));
+                        context.commit('retrieveUserData',user_Data);
                         resolve(response);
                     })
                     .catch(error=>{
@@ -53,17 +60,17 @@ export const store = new Vuex.Store({
         destroyToken(context){
                 if (context.getters.loggedIN) {
                     const token={
-                        token:this.state.token
+                        token:this.state.userData.token
                     }
                     return new Promise((resolve, reject) =>{
                         Axios.post('http://app.test/api/auth/logout',token)
                             .then(function(response){
-                                localStorage.removeItem('access_token');
+                                localStorage.removeItem('user_data');
                                 context.commit('destroyToken');
                                 resolve(response);
                             })
                             .catch(error=>{
-                                localStorage.removeItem('access_token');
+                                localStorage.removeItem('user_data');
                                 context.commit('destroyToken');
                                 reject(error);
                             })

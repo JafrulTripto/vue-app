@@ -8,6 +8,9 @@
             <slot name="description"></slot>
         </td>
         <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+            <slot name="user_name"></slot>
+        </td>
+        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
             <slot name="start-date"></slot>
         </td>
 
