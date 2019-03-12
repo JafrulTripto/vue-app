@@ -4,7 +4,7 @@
             <h2 class="page-header float-right display-3 text-white">To-Do List</h2>
             <h2 class="page-header">Add To-Do</h2>
             <!-- Trigger the modal with a button -->
-            <b-btn v-b-modal="'myModal'" class="btn-success" @click="edit=false">Add To-Do</b-btn>
+            <button v-b-modal="'myModal'" class="btn-success" @click="edit=false">Add To-Do</button>
         </div>
 
         <div style="margin-bottom: 30px">
@@ -222,16 +222,21 @@
         },
 
         created() {
-            this.$store.getters.databaseRead;
-            console.log(this.login);
+            this.$store.dispatch('setTodoList')
+                .then(response=>{
+                    console.log(response);
+                })
+                // .then(response=>{
+                //     console.log(response);
+                // });
 
 
         },
         computed: {
             tasks() {
                 let _this = this;
-                console.log(_this.$store.state.lists);
-                return _this.$store.state.lists.filter(task => {
+                //console.log(_this.$store.getters.databaseRead);
+                return _this.$store.getters.databaseRead.filter(task => {
                     if (_this.search) {
                         return task.title.toLowerCase().includes(_this.search.toLowerCase())
                     }else

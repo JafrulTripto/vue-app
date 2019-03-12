@@ -9,15 +9,11 @@
 
 <script>
 
-
-    import todoGrid from './components/todo-grid';
     import header from './Header';
-    import 'bootstrap/dist/css/bootstrap.css';
+
 
     export default {
         components: {
-
-            todo: todoGrid,
             appHeader:header
         },
         created() {

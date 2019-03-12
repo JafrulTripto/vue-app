@@ -52,7 +52,7 @@
 
     import moment from 'moment';
     import Axios from'axios';
-    import 'bootstrap/dist/css/bootstrap.css';
+
 
     export default {
         name: 'main-file',

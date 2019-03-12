@@ -11,10 +11,7 @@ export const store = new Vuex.Store({
     },
     getters:{
         databaseRead: state => {
-
-            Axios.get('http://app.test/api/todo?token='+state.userData.token).then(function(response){
-                state.lists = response.data.data;
-            });
+                return state.lists;
         },
         loggedIN(state){
             if (!state.userData || !state.userData.token)
@@ -34,6 +31,9 @@ export const store = new Vuex.Store({
         },
         destroyToken(state){
             state.userData.token = null;
+        },
+        setTodoList(state,todo){
+            state.lists = todo.data.data;
         }
     },
     actions:{
@@ -77,6 +77,24 @@ export const store = new Vuex.Store({
                             })
                     } )
                 }
+        },
+        setTodoList(context){
+            console.log(this.state.userData.token);
+            if (context.getters.loggedIN){
+                return new Promise((resolve, reject)=>{
+                    Axios.get('http://app.test/api/todo?token='+this.state.userData.token)
+                        .then(function (response) {
+                            context.commit('setTodoList',response);
+                            console.log(response);
+                            resolve(response);
+                        })
+                        .catch(error=>{
+                            reject(error);
+                        })
+                })
+            }
         }
-    }
+    },
+
+
 });
