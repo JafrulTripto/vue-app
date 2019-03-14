@@ -127,7 +127,7 @@
                         start_time:startDate,
                         end_time:endDate
                     }
-                Axios.put('http://app.test/api/todo/'+id,form).then(function(response){
+                Axios.put('http://safaratodo.us-east-1.elasticbeanstalk.com/api/todo/'+id,form).then(function(response){
                     _this.$store.state.lists = response.data.data;
                 });
                 _this.show=false;

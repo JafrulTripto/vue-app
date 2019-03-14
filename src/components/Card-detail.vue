@@ -1,51 +1,56 @@
 <template>
 
     <tr>
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <slot name="title"></slot>
         </td>
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <slot name="description"></slot>
         </td>
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
-            <slot name="user_name"></slot>
-        </td>
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <slot name="start-date"></slot>
         </td>
 
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <slot name="end-date"></slot>
         </td>
-        <td v-if="status=='Completed'" :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td v-if="status=='Completed'" :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <h5>Task Finished</h5>
         </td>
-        <td v-else-if="calculateCountdown()" :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td v-else-if="calculateCountdown()" :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <h5>Deadline over</h5>
         </td>
-        <td v-else :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td v-else :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <countdown :time="endTimeMillisecond">
-                <template slot-scope="props">Time Remaining<br>{{ props.days}} days, {{ props.hours }} hours, {{
+                <template slot-scope="props">{{ props.days}} days, {{ props.hours }} hours, {{
                     props.minutes }} minutes, {{ props.seconds }} seconds.
                 </template>
             </countdown>
         </td>
 
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
+        <td :class="status === 'Completed' ? 'text-success' : 'text-danger'">
             <div :class="status === 'Completed' ? 'badge badge-success':'badge badge-danger'">
                 <slot name="status"></slot>
             </div>
         </td>
-        <td :class="status === 'Completed' ? 'alert alert-success' : 'alert alert-danger'">
-            <div class="btn-group" role="group" aria-label="Basic example" v-if="status=== 'Completed'">
-                <button class="btn btn-danger" @click.prevent="deleteTodo()">Delete</button>
-                <button class="btn btn-success" @click.stop="changeStatus()">Done</button>
+        <td :class="status === 'Completed' ? 'text-success' : 'text-danger'">
+            <div class="button-div" v-if="status=== 'Completed'">
+                <button class="btn btn-sm btn-danger action-buttons" @click.prevent="deleteTodo()">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <button class="btn btn-sm btn-success " @click.stop="changeStatus()">
+                    <i class="fas fa-check-square"></i>
+                </button>
             </div>
 
-            <div class="btn-group" role="group" v-else>
-                <button class="btn btn-danger" @click.prevent="deleteTodo()">Delete</button>
-                <button class="btn btn-success" @click.stop="changeStatus()">Done</button>
+            <div role="group" v-else class="button-div">
+                <button class="btn btn-sm btn-danger action-buttons" @click.prevent="deleteTodo()">
+                    <i class="fas fa-trash"></i>
+                </button>
                 <slot name="edit"></slot>
+                <button class="btn btn-sm btn-success" @click.stop="changeStatus()">
+                    <i class="fas fa-check-square"></i>
+                </button>
             </div>
         </td>
     </tr>
@@ -104,6 +109,13 @@
 
 <style>
 
+    .action-buttons{
+        margin-right: 10px;
+    }
+    .button-div{
+        overflow-x: auto;
+        display: inline-block;
+    }
 </style>
 
 

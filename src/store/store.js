@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
     actions:{
         retrieveUserData(context,credentials){
             return new Promise((resolve, reject) =>{
-                Axios.post('http://app.test/api/login',credentials)
+                Axios.post('http://safaratodo.us-east-1.elasticbeanstalk.com/api/login',credentials)
                     .then(function(response){
 
                         let user_Data = {
@@ -64,7 +64,7 @@ export const store = new Vuex.Store({
                         token:this.state.userData.token
                     }
                     return new Promise((resolve, reject) =>{
-                        Axios.post('http://app.test/api/auth/logout',token)
+                        Axios.post('http://safaratodo.us-east-1.elasticbeanstalk.com/api/auth/logout',token)
                             .then(function(response){
                                 localStorage.removeItem('user_data');
                                 context.commit('destroyToken');
@@ -82,7 +82,7 @@ export const store = new Vuex.Store({
             console.log(this.state.userData.token);
             if (context.getters.loggedIN){
                 return new Promise((resolve, reject)=>{
-                    Axios.get('http://app.test/api/todo?token='+this.state.userData.token)
+                    Axios.get('http://safaratodo.us-east-1.elasticbeanstalk.com/api/todo?token='+this.state.userData.token)
                         .then(function (response) {
                             context.commit('setTodoList',response);
                             console.log(response);

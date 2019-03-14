@@ -68,7 +68,7 @@
         },
         methods:{
             registerUser(){
-                Axios.post('http://app.test/api/createUser',this.regForm).then(function(response){
+                Axios.post('http://safaratodo.us-east-1.elasticbeanstalk.com/api/createUser',this.regForm).then(function(response){
                     console.log(response);
 
                 });

@@ -38,7 +38,7 @@
             <tr>
                 <th>Title</th>
                 <th>Description</th>
-                <th>User</th>
+
                 <th>Start time</th>
                 <th>End Time</th>
                 <th>Remaining Time</th>
@@ -57,14 +57,13 @@
 
                 <h5 slot="title">{{card.title}}</h5>
                 <p slot="description">{{card.description}}</p>
-                <h5 slot="user_name">{{card.user_name}}</h5>
                 <h6 slot="start-date">{{moment(card.start_time)}}</h6>
                 <h6 slot="end-date">{{moment(card.end_time)}}</h6>
                 <h6 slot="status">{{card.status}}</h6>
                 <button slot="edit"
-                        class="btn btn-info"
+                        class="btn btn-info btn-sm action-buttons"
                         v-b-modal="'myModal'"
-                        @click="clicked(index)">Edit
+                        @click="clicked(index)"><i class="fas fa-pen-square"></i>
                 </button>
             </new-element>
             </tbody>
@@ -160,7 +159,7 @@
                         endDate:endDate,
                         status:'On progress'
                     };
-                    Axios.post('http://app.test/api/todo',form).then(function(response){
+                    Axios.post('http://safaratodo.us-east-1.elasticbeanstalk.com/api/todo',form).then(function(response){
 
                     });
                     _this.$toastr.success('New To-Do added', 'Message', {positionClass: "toast-bottom-right"});
@@ -190,7 +189,7 @@
                     .then((value) => {
                         if (value) {
                             let id = _this.$store.state.lists[key].id;
-                            Axios.delete('http://app.test/api/todo/'+id+'?token='+this.$store.getters.getToken)
+                            Axios.delete('http://safaratodo.us-east-1.elasticbeanstalk.com/api/todo/'+id+'?token='+this.$store.getters.getToken)
                                 .then(function(response){
                                 _this.$store.state.lists.splice(key, 1);
                                 _this.$store.state.lists = response.data.data;
@@ -211,7 +210,7 @@
                     status:_this.$store.state.lists[key].status
                 }
                 _this.$toastr.info('The task is completed!!!', 'Message', {positionClass: "toast-bottom-right"});
-                Axios.post('http://app.test/api/update_status/'+ this.$store.state.lists[key].id,form).then(function(response){
+                Axios.post('http://safaratodo.us-east-1.elasticbeanstalk.com/api/update_status/'+ this.$store.state.lists[key].id,form).then(function(response){
 
                 });
             },
@@ -274,5 +273,8 @@
         background-image: url("../assets/background.jpg");
         background-size: cover;
         height: 100%;
+    }
+    .action-buttons{
+        margin-right: 10px;
     }
 </style>
